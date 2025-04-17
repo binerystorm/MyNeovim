@@ -1,8 +1,13 @@
-function tmux_new_win()
+local M = {}
+local settings = {
+    default_program = "ls"
+}
+
+M.new_win = function()
     vim.system({"tmux", "new-window"}, {text = true}, on_proc_ex)
 end
 
-function tmux_start_vim_session()
+M.start_vim_session = function()
     local check_session_cmd = vim.fn.split([[tmux has-session -t vim_session]])
     local start_session_cmd = vim.fn.split([[tmux new-session -d -s vim_session]])
     local tmux_sub_cmd = [[tmux source-file ~/.config/nvim/tmux.conf]]
@@ -18,25 +23,28 @@ function tmux_start_vim_session()
     end
 end
 
-function tmux_run(cmd)
+M.set_default_program = function(prog)
+    settings.default_program = prog
+end
+
+M.run = function(cmd)
+    cmd = cmd or settings.default_program
     tmux_select = {"tmux", "select-window", "-tvim_session:vim_run"}
     tmux_cmd = {"tmux", "send-keys", cmd, "Enter"}
     vim.system(tmux_select):wait()
     vim.system(tmux_cmd):wait()
 end
 
-function tmux_compile(cmd)
+M.compile = function(cmd)
     local tmux_select = {"tmux", "select-window", "-tvim_session:vim_compile"}
     local tmux_cmd = {"tmux", "send-keys", cmd, "Enter"}
     vim.system(tmux_select):wait()
     vim.system(tmux_cmd):wait()
 end
 
-function tmux_spawn(shell_cmd)
+M.spawn = function(shell_cmd)
     local tmux_spawn = {"tmux", "new-window", "-tvim_session:", shell_cmd}
     vim.system(tmux_spawn):wait()
 end
 
-vim.api.nvim_create_user_command("Twin", tmux_new_win, {})
-
-
+return M
