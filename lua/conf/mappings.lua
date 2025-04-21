@@ -12,6 +12,8 @@ end
 
 vim.g.mapleader = " "
 
+map("<leader>/", function() vim.fn.setreg("/", "") end)
+
 -- Tab control
 map("<leader>tt", vim.cmd.tabnew)
 map("<leader>tc", edit_conf)
