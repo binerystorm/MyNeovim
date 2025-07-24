@@ -51,3 +51,8 @@ vim.api.nvim_create_user_command("TRun", function(opts)
     tmux.run(opts.fargs[1])
 end, {nargs = "?"})
 
+vim.api.nvim_create_user_command("Cd", function(opts)
+    tmux.run("cd " .. opts.fargs[1])
+    vim.cmd.tcd(opts.fargs[1])
+end, {nargs = 1})
+
