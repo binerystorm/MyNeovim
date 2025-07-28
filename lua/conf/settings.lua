@@ -19,4 +19,8 @@ set.smarttab = true
 set.nu = true
 set.rnu = true
 
+set.linebreak=true
+set.breakindent=true
+set.breakindentopt="shift:4"
+
 set.scrolloff= 5
